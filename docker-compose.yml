@@ -1,0 +1,31 @@
+# 開発用コンテナ群
+
+version: "3.7"
+services:
+  minecraft:
+    image: itzg/minecraft-bedrock-server
+    ports:
+        - 19132:19132/udp
+    environment:
+      EULA: "TRUE"
+    container_name: minecraft
+    volumes:
+      - ./data:/data
+      - /etc/timezone:/etc/timezone:ro
+    tty: true
+    stdin_open: true
+    restart: always
+  backup:
+    image: kaiede/minecraft-bedrock-backup
+    container_name: minecraft_backup
+    depends_on:
+      - minecraft
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data:/data
+      - ./backups:/backups
+    environment:
+      TZ: "Asia/Tokyo"
+      GID: 998
+    tty: true
+    network_mode: "service:minecraft"

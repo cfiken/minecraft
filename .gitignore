@@ -1,0 +1,7 @@
+data/*
+backups/*
+backups/.*
+
+!data/.gitkeep
+!backups/.gitkeep
+!backups/config.yml
