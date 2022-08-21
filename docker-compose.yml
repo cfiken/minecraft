@@ -15,6 +15,13 @@ services:
     tty: true
     stdin_open: true
     restart: always
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: ap-northeast-1
+        awslogs-group: "/minecraft"
+        awslogs-create-group: "true"
+        tag: 'minecraft-{{ with split .ImageName ":" }}{{join . "_"}}{{end}}-{{.ID}}'
   backup:
     image: kaiede/minecraft-bedrock-backup
     container_name: minecraft_backup
@@ -29,3 +36,10 @@ services:
       GID: 998
     tty: true
     network_mode: "service:minecraft"
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: ap-northeast-1
+        awslogs-group: "/minecraft"
+        awslogs-create-group: "true"
+        tag: 'minecraft-{{ with split .ImageName ":" }}{{join . "_"}}{{end}}-{{.ID}}'
